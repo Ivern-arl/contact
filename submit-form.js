@@ -19,7 +19,7 @@ exports.handler = async function (event, context) {
   }
 
   // ⚠️ Remplace par ta vraie clé secrète reCAPTCHA
-  const secretKey = "6Ldh-ZlrAAAAAEjwPcwL0rq5G6kRwTx5ioPi5Klc";
+  const secretKey = "6Ldh-ZlrAAAAAMV3Y42pUzRBIN4HVOUZbuEEFiXm";
 
   const params = new URLSearchParams();
   params.append("secret", secretKey);
