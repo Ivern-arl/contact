@@ -18,17 +18,14 @@ exports.handler = async function (event, context) {
     };
   }
 
-  // ⚠️ METS ICI TA CLÉ SECRÈTE reCAPTCHA v2
+  // ⚠️ Remplace par ta vraie clé secrète reCAPTCHA
   const secretKey = "6Ldh-ZlrAAAAAEjwPcwL0rq5G6kRwTx5ioPi5Klc";
-
-  // Vérifie le token auprès de Google
-  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
 
   const params = new URLSearchParams();
   params.append("secret", secretKey);
   params.append("response", token);
 
-  const recaptchaRes = await fetch(verifyUrl, {
+  const recaptchaRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params,
@@ -43,7 +40,9 @@ exports.handler = async function (event, context) {
     };
   }
 
-  // Envoie à Formspree (utilise ton endpoint réel ici)
+  // ✅ Supprime le token avant d’envoyer à Formspree
+  delete data["g-recaptcha-response"];
+
   const formspreeRes = await fetch("https://formspree.io/f/mzzvgjjd", {
     method: "POST",
     headers: {
