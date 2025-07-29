@@ -66,34 +66,42 @@
     </div>
   </div>
   <script>
+  <!-- ... le reste de ton HTML ... -->
+
   const form = document.getElementById("contactForm");
 
   form.addEventListener("submit", async function (e) {
-    e.preventDefault();
+    e.preventDefault(); // Empêche l'envoi immédiat du formulaire
 
-    const token = grecaptcha.getResponse();
+    const token = grecaptcha.getResponse(); // Récupère le token reCAPTCHA
+
     if (!token) {
       alert("Veuillez valider le reCAPTCHA.");
       return;
     }
 
+    // Préparation des données du formulaire
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    data["g-recaptcha-response"] = token;
+    data["g-recaptcha-response"] = token; // Ajoute le token à l'objet
 
+    // Envoie vers la Netlify Function
     const res = await fetch("/.netlify/functions/submit-form", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
 
     const result = await res.json();
+
     if (res.ok) {
       alert("Message envoyé avec succès !");
       form.reset();
-      grecaptcha.reset();
+      grecaptcha.reset(); // Réinitialise le reCAPTCHA
     } else {
-      alert("Erreur : " + (result.error || "Échec"));
+      alert("Erreur : " + (result.error || "Échec de l'envoi."));
     }
   });
 </script>
