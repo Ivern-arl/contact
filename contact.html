@@ -8,7 +8,6 @@
   <meta name="robots" content="index, nofollow">
   <title>Formulaire de Contact</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
   <div class="container">
@@ -56,8 +55,12 @@
             <textarea id="message" name="message" rows="6" required></textarea>
           </div>
 
-          <!-- reCAPTCHA -->
-           <div class="g-recaptcha" data-sitekey="6Ldh-ZIrAAAAAEjwPcwL0rq5G6kRwTx5ioPi5Klc"></div>
+          <!-- Honeypot anti-bot -->
+<input type="text" name="_honey" style="display:none">
+
+<!-- Désactive captcha Formspree -->
+<input type="hidden" name="_captcha" value="false">
+
 
 
           <button type="submit">Envoyer</button>
