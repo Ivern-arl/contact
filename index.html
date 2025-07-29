@@ -57,7 +57,7 @@
           </div>
 
           <!-- reCAPTCHA -->
-           <div class="g-recaptcha" data-sitekey="6LdvuplrAAAAAO1TbcpG6DbI8_6r1fOF9VIg27Tt"></div>
+           <div class="g-recaptcha" data-sitekey="6Ldh-ZlrAAAAAEjwPcwL0rq5G6kRwTx5ioPi5Klc"></div>
 
 
           <button type="submit">Envoyer</button>
@@ -65,5 +65,37 @@
       </div>
     </div>
   </div>
+  <script>
+  const form = document.getElementById("contactForm");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const token = grecaptcha.getResponse();
+    if (!token) {
+      alert("Veuillez valider le reCAPTCHA.");
+      return;
+    }
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    data["g-recaptcha-response"] = token;
+
+    const res = await fetch("/.netlify/functions/submit-form", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      alert("Message envoyé avec succès !");
+      form.reset();
+      grecaptcha.reset();
+    } else {
+      alert("Erreur : " + (result.error || "Échec"));
+    }
+  });
+</script>
 </body>
 </html>
